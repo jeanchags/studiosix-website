@@ -84,6 +84,19 @@ body {
     border-color: var(--color-primary);
 }
 
+/* Inverted style for primary button on primary background */
+.bg-primary .btn-primary {
+    background-color: var(--color-background);
+    color: var(--color-primary);
+    border-color: var(--color-background);
+}
+
+.bg-primary .btn-primary:hover {
+    background-color: transparent;
+    color: var(--color-background);
+    border-color: var(--color-background);
+}
+
 .btn-filter {
     background-color: transparent;
     border: 1px solid var(--color-border);
