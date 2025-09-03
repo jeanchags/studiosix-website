@@ -1,142 +1,137 @@
 /*
- * Studio Six - Custom Stylesheet
- * Author: Stack Pilot
- * Version: 1.2
- * Project: Studio Six Institutional Website
- *
- * TABLE OF CONTENTS
- * 1.0 - CSS Variables & Base Styles
- * 2.0 - Typography & Fonts
- * 3.0 - Layout & Components
- * 4.0 - Header & Navigation
- * 5.0 - Page Specific Styles
- * 6.0 - Animations & Transitions
- * 7.0 - Utilities
+    STUDIO SIX - STYLESHEET
+    Version: 1.1.0
+    Author: Stack Pilot
+    Description: Core stylesheet with dark mode support.
 */
 
-/* 1.0 - CSS Variables & Base Styles
+/* 1.0 - VARIABLES & SETUP
 -------------------------------------------------- */
 :root {
-    /* Color Palette (from brand_guide.md) */
-    --color-black: #111111;
-    --color-white: #FFFFFF;
-    --color-gray: #F4F4F4;
-    --color-text: #374151; /* A slightly softer gray for body text */
-    --color-border: #E5E7EB;
-
-    /* Typography (from brand_guide.md) */
+    /* Typography */
     --font-brand: 'Bebas Neue', sans-serif;
-    --font-heading: 'Montserrat', sans-serif;
+    --font-title: 'Montserrat', sans-serif;
     --font-body: 'Lato', sans-serif;
 
-    /* Spacing & Radius */
-    --border-radius: 0.25rem;
+    /* Light Theme Colors */
+    --color-primary: #111111;
+    --color-background: #FFFFFF;
+    --color-surface: #F4F4F4;
+    --color-surface-alt: #EAEAEA;
+    --color-text-primary: #111111;
+    --color-text-secondary: #525252;
+    --color-text-tertiary: #6b7280;
+    --color-border: #d1d1d1;
 }
 
+html[data-theme='dark'] {
+    /* Dark Theme Colors */
+    --color-primary: #FFFFFF;
+    --color-background: #111111;
+    --color-surface: #1E1E1E;
+    --color-surface-alt: #2a2a2a;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #a0a0a0;
+    --color-text-tertiary: #9ca3af;
+    --color-border: #444444;
+}
+
+/* 2.0 - BASE STYLES
+-------------------------------------------------- */
 body {
     font-family: var(--font-body);
-    background-color: var(--color-white);
-    color: var(--color-text);
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* 2.0 - Typography & Fonts
+.font-titulo { font-family: var(--font-title); }
+.font-marca { font-family: var(--font-brand); }
+
+/* Helper classes for text and background colors */
+.bg-primary { background-color: var(--color-primary); }
+.bg-surface { background-color: var(--color-surface); }
+.bg-surface-alt { background-color: var(--color-surface-alt); }
+.text-primary { color: var(--color-text-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-tertiary { color: var(--color-text-tertiary); }
+.text-background { color: var(--color-background); }
+
+
+/* 3.0 - REUSABLE COMPONENTS
 -------------------------------------------------- */
-.font-marca {
-    font-family: var(--font-brand);
-}
-.font-titulo {
-    font-family: var(--font-heading);
-}
-
-.hero-title {
-    font-size: clamp(3rem, 10vw, 6rem); /* Fluid typography */
-    letter-spacing: -0.05em;
-    line-height: 1;
-}
-
-/* 3.0 - Layout & Components
--------------------------------------------------- */
-.page {
-    display: none;
-    animation: fadeIn 0.6s ease-in-out;
-}
-.page.active {
-    display: block;
-}
 
 /* Buttons */
 .btn {
     display: inline-block;
-    font-family: var(--font-heading);
+    font-family: var(--font-title);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     padding: 1rem 2.5rem;
-    border-radius: var(--border-radius);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transform: translateY(0);
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 14px rgba(0,0,0,0.1);
+    border-radius: 0.25rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .btn-primary {
-    background-color: var(--color-black);
-    color: var(--color-white);
+    background-color: var(--color-primary);
+    color: var(--color-background);
 }
 .btn-primary:hover {
-    background-color: #333;
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
 }
 
 .btn-filter {
-    display: inline-block;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 1.5rem;
+    background-color: transparent;
     border: 1px solid var(--color-border);
-    color: var(--color-text);
-    border-radius: var(--border-radius);
-    transition: all 0.3s ease;
+    color: var(--color-text-secondary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
 }
-
 .btn-filter.active, .btn-filter:hover {
-    background-color: var(--color-black);
-    color: var(--color-white);
-    border-color: var(--color-black);
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    border-color: var(--color-primary);
 }
-
 
 /* Forms */
 .form-input {
     width: 100%;
     padding: 0.75rem 1rem;
     border: 1px solid var(--color-border);
-    background-color: var(--color-white);
-    border-radius: var(--border-radius);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--color-background);
+    transition: border-color 0.3s ease;
+    border-radius: 0.25rem;
+    color: var(--color-text-primary);
 }
 .form-input:focus {
     outline: none;
-    border-color: var(--color-black);
-    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.1);
+    border-color: var(--color-primary);
 }
 
-/* 4.0 - Header & Navigation
+/* Social Links */
+.social-link {
+    color: var(--color-text-secondary);
+    transition: color 0.3s ease;
+}
+.social-link:hover {
+    color: var(--color-primary);
+}
+
+
+/* 4.0 - HEADER & NAVIGATION
 -------------------------------------------------- */
 #header {
-    background-color: rgba(244, 244, 244, 0.8);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: var(--color-surface);
     border-bottom: 1px solid transparent;
 }
-
 #header.scrolled {
-    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-surface-alt);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-bottom-color: var(--color-border);
 }
 
 .logo-container-sm {
@@ -146,32 +141,27 @@ body {
     line-height: 1;
     text-transform: uppercase;
     letter-spacing: -0.05em;
-    color: var(--color-black);
-    font-weight: 400; /* Ensures consistent font weight */
+    color: var(--color-primary);
+    font-weight: 400;
 }
-
-.studio-part-sm {
-    color: var(--color-black);
-}
-
+.studio-part-sm { color: var(--color-primary); }
 .six-part-sm {
     color: transparent;
-    -webkit-text-stroke: 1px var(--color-black);
-    text-stroke: 1px var(--color-black);
+    -webkit-text-stroke: 1px var(--color-primary);
+    text-stroke: 1px var(--color-primary);
 }
 
 .nav-link {
-    font-family: var(--font-heading);
+    font-family: var(--font-title);
     font-size: 0.875rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    color: var(--color-text);
-    padding-bottom: 0.25rem;
-    position: relative;
+    color: var(--color-text-secondary);
     transition: color 0.3s ease;
+    position: relative;
+    padding-bottom: 0.5rem;
 }
-
 .nav-link::after {
     content: '';
     position: absolute;
@@ -179,14 +169,12 @@ body {
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--color-black);
-    transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
 }
-
 .nav-link:hover, .nav-link.active {
-    color: var(--color-black);
+    color: var(--color-primary);
 }
-
 .nav-link:hover::after {
     width: 100%;
 }
@@ -194,43 +182,58 @@ body {
 .nav-link-mobile {
     display: block;
     padding: 0.75rem 1rem;
-    font-family: var(--font-heading);
+    font-family: var(--font-title);
     font-weight: 600;
     text-transform: uppercase;
-    border-radius: var(--border-radius);
+    color: var(--color-text-secondary);
+    border-radius: 0.25rem;
 }
-.nav-link-mobile:hover {
-    background-color: var(--color-gray);
-}
-
-.social-link {
-    color: var(--color-text);
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-.social-link:hover {
-    color: var(--color-black);
-    transform: scale(1.1);
+.nav-link-mobile:hover, .nav-link-mobile.active {
+    background-color: var(--color-surface-alt);
+    color: var(--color-primary);
 }
 
-/* 5.0 - Page Specific Styles
+.theme-toggle {
+    color: var(--color-text-secondary);
+}
+.theme-toggle:hover {
+    color: var(--color-primary);
+}
+
+
+/* 5.0 - PAGE SPECIFIC STYLES
 -------------------------------------------------- */
-.bg-cinza-neutro { background-color: var(--color-gray); }
-.bg-preto-profundo { background-color: var(--color-black); }
-.text-preto-profundo { color: var(--color-black); }
+/* Hero Section */
+.hero-title {
+    font-size: clamp(3rem, 10vw, 6rem);
+    letter-spacing: -0.05em;
+    line-height: 1;
+}
 
-
+/* Project Items */
 .project-item {
     transition: opacity 0.3s ease;
 }
 
-/* 6.0 - Animations & Transitions
+/* 6.0 - ANIMATIONS & TRANSITIONS
 -------------------------------------------------- */
+.page {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+.page.active {
+    display: block;
+}
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-@keyframes fade-in-up {
+.animate-fade-in-up {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+}
+@keyframes fadeInUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -240,8 +243,3 @@ body {
         transform: translateY(0);
     }
 }
-
-.animate-fade-in-up {
-    animation: fade-in-up 0.8s both;
-}
-
