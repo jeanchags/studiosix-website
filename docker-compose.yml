@@ -1,0 +1,93 @@
+# docker-compose.yml by Sys Forge - Studio Six
+# This file orchestrates the services using variables from a .env file.
+# Version downgraded to 3.3 for broader compatibility.
+
+version: '3.3'
+
+services:
+  # Application Service (Apache + PHP)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: studiosix-app
+    hostname: studiosix-app
+    labels:
+      - ru.grachevko.dhu=studiosix-app
+    ports:
+      # Port mapping now uses a variable from the .env file.
+      - "${APP_PORT}:80"
+    volumes:
+      # The local source directory is now mapped from './public'.
+      - ./public:/var/www/localhost/htdocs
+    environment:
+      # Environment variables for the application are now dynamic.
+      - DB_HOST=db
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - studiosix-net
+
+  # Database Service (MariaDB)
+  db:
+    image: mariadb:10.11
+    container_name: studiosix-db
+    hostname: studiosix-db
+    ports:
+      # The database port is exposed dynamically. Leave DB_PORT empty in production.
+      - "${DB_PORT}:3306"
+    environment:
+      # Database credentials are now read from the .env file.
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USER}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - studiosix-net
+
+  # phpMyAdmin Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: studiosix-pma
+    hostname: studiosix-pma
+    labels:
+      - ru.grachevko.dhu=studiosix-pma # Corrected: Added label for hosts-updater
+    ports:
+      # Port mapping for phpMyAdmin is now dynamic.
+      - "${PMA_PORT}:80"
+    environment:
+      - PMA_HOST=db
+      - PMA_PORT=3306
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      - studiosix-net
+
+  # Hosts Updater Service (Development Only)
+  # This service automatically updates your computer's /etc/hosts file.
+  # It allows accessing the application via http://studiosix-app instead of localhost.
+  hosts-updater:
+    image: grachev/docker-hosts-updater
+    container_name: studiosix-hosts-updater
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/hosts:/opt/hosts
+    networks:
+      - studiosix-net
+
+# Define the network for communication between services.
+networks:
+  studiosix-net:
+    driver: bridge
+
+# Define the volume for persistent database storage.
+volumes:
+  db_data:
+    driver: local
